@@ -8,14 +8,14 @@ class ContactItem extends React.Component {
 		super(props);
 	}
 
-	handleItemClick(prefix, suffix, e) {
+	handleItemClick = (prefix, suffix, e) => {
 		console.log(prefix + this.props.login + suffix + ' // ' + e.type);
 	}
 
 	render() {
 		var {login, name, department} = this.props;
 		return (
-			<li className="item" onClick={this.handleItemClick.bind(this, '<', '>')}>
+			<li className="item" onClick={e => this.handleItemClick('<', '>', e)}>
 				<ContactAvatar login={login} />
 				<div className="content">
 					<h4 className="header">{name}</h4>
