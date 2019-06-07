@@ -1,21 +1,17 @@
-import React from 'react';
+import * as React from 'react';
 
 import AppHeader from './AppHeader';
 import ContactsList from './ContactsList';
 import Resource from './Resource';
 
-class App extends React.Component {
+import { connect } from 'react-redux';
+import { contactsFetched } from './actions';
 
-    constructor() {
-        super();
-        this.state = {};
-    }
+export class App extends React.Component {
 
     componentDidMount() {
         Resource.getContacts().then(res => {
-            this.setState({
-                contacts: res
-            });
+            this.props.contactsFetched(res);
         });
     }
 
@@ -24,7 +20,7 @@ class App extends React.Component {
             <div>
                 <AppHeader />
                 <main className="ui main text container">
-                    {this.state.contacts ? <ContactsList contacts={this.state.contacts} /> : 'Ładowanie...'}
+                    {this.props.contacts ? <ContactsList contacts={this.props.contacts} /> : 'Ładowanie...'}
                 </main>
             </div>
         );
@@ -32,4 +28,12 @@ class App extends React.Component {
 
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        contacts: state.contacts
+    };
+};
+
+const mapDispatchToProps = { contactsFetched };
+
+export const AppContainer = connect(mapStateToProps, mapDispatchToProps)(App);
